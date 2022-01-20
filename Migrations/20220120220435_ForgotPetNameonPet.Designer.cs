@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using pet_hotel.Models;
@@ -9,9 +10,10 @@ using pet_hotel.Models;
 namespace dotnet_bakery.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220120220435_ForgotPetNameonPet")]
+    partial class ForgotPetNameonPet
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,25 +28,25 @@ namespace dotnet_bakery.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("breed")
+                    b.Property<int>("PetBreed")
                         .HasColumnType("integer");
+
+                    b.Property<int>("PetColor")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("PetName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("checkedInAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("color")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("petOwnerid")
+                    b.Property<int>("petOwnerId")
                         .HasColumnType("integer");
 
                     b.HasKey("id");
 
-                    b.HasIndex("petOwnerid");
+                    b.HasIndex("petOwnerId");
 
                     b.ToTable("Pet");
                 });
@@ -71,13 +73,13 @@ namespace dotnet_bakery.Migrations
 
             modelBuilder.Entity("pet_hotel.Pet", b =>
                 {
-                    b.HasOne("pet_hotel.PetOwner", "petOwner")
+                    b.HasOne("pet_hotel.PetOwner", "ownedBy")
                         .WithMany()
-                        .HasForeignKey("petOwnerid")
+                        .HasForeignKey("petOwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("petOwner");
+                    b.Navigation("ownedBy");
                 });
 #pragma warning restore 612, 618
         }

@@ -21,33 +21,45 @@ namespace pet_hotel.Controllers
 
         // This is just a stub for GET / to prevent any weird frontend errors that 
         // occur when the route is missing in this controller
+        // [HttpGet]
+        // public IEnumerable<Pet> GetPets() 
+        // {
+        //     return new List<Pet>();
+        // }
+
         [HttpGet]
-        public IEnumerable<Pet> GetPets() {
-            return new List<Pet>();
+        public IEnumerable<Pet> GetAll()
+        {
+          return _context.Pet
+              .Include(pet => pet.petOwner);
         }
 
-        // [HttpGet]
-        // [Route("test")]
-        // public IEnumerable<Pet> GetPets() {
-        //     PetOwner blaine = new PetOwner{
-        //         name = "Blaine"
-        //     };
+        [HttpPost]
+        public Pet Post(Pet pet)
+        {
+          _context.Add(pet);
+          _context.SaveChanges();
 
-        //     Pet newPet1 = new Pet {
-        //         name = "Big Dog",
-        //         petOwner = blaine,
-        //         color = PetColorType.Black,
-        //         breed = PetBreedType.Poodle,
-        //     };
+          return pet;
+        }
 
-        //     Pet newPet2 = new Pet {
-        //         name = "Little Dog",
-        //         petOwner = blaine,
-        //         color = PetColorType.Golden,
-        //         breed = PetBreedType.Labrador,
-        //     };
+        [HttpPut("{id}")]
+        public Pet Put(int id, Pet pet)
+        {
+          pet.id = id;
+          _context.Update(pet);
+          _context.SaveChanges();
+          return pet;
+        }
 
-        //     return new List<Pet>{ newPet1, newPet2};
-        // }
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+          Pet pet = _context.Pet.Find(id);
+          _context.Pet.Remove(pet);
+          _context.SaveChanges();
+        }
+
+        
     }
 }
