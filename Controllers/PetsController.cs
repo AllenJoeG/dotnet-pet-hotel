@@ -47,6 +47,7 @@ namespace pet_hotel.Controllers
         public Pet Put(int id, Pet pet)
         {
           pet.id = id;
+          pet.checkedInAt = DateTime.Now;
           _context.Update(pet);
           _context.SaveChanges();
           return pet;
