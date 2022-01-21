@@ -34,6 +34,19 @@ namespace pet_hotel.Controllers
               .Include(pet => pet.petOwner);
         }
 
+        [HttpGet("{id}")]
+        public ActionResult<Pet> GetById(int id)
+        {
+          Pet pet = _context.Pet
+              .SingleOrDefault(pet => pet.id == id);
+          // Return a `404 Not Found` if the pet doesn't exist
+          if (pet is null)
+          {
+            return NotFound();
+          }
+          return pet;
+        }
+
         [HttpPost]
         public Pet Post(Pet pet)
         {
@@ -43,15 +56,39 @@ namespace pet_hotel.Controllers
           return pet;
         }
 
-        [HttpPut("{id}")]
-        public Pet Put(int id, Pet pet)
+        [HttpPut("{id}/checkin")]
+        public Pet Put(int id)
         {
-          pet.id = id;
-          pet.checkedInAt = DateTime.Now;
+          //Fetch Object data by id
+          Pet pet = _context.Pet
+              .SingleOrDefault(pet => pet.id == id);
+          //Generate timestamp
+          DateTime date = DateTime.Now;
+          //update Object w/ timestamp
+          pet.checkedInAt = date;
+          //Update all that
           _context.Update(pet);
           _context.SaveChanges();
+
           return pet;
         }
+
+        [HttpPut("{id}/checkout")]
+        public Pet PutCheckout(int id)
+        {
+          //Fetch Object data by id
+          Pet pet = _context.Pet
+              .SingleOrDefault(pet => pet.id == id);
+          //Generate timestamp
+          //update Object w/ timestamp
+          pet.checkedInAt = null;
+          //Update all that
+          _context.Update(pet);
+          _context.SaveChanges();
+
+          return pet;
+        }
+
 
         [HttpDelete("{id}")]
         public void Delete(int id)

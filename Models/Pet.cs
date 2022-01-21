@@ -37,9 +37,9 @@ namespace pet_hotel
 
       [Required]
       [JsonConverter(typeof(JsonStringEnumConverter))]
-      public PetColorType color {get; set; }
+      public PetColorType color { get; set; }
 
-      public DateTime? checkedInAt {get; set; }
+      public DateTime? checkedInAt { get; set; }
 
       [ForeignKey("PetOwner")]
       public int petOwnerid { get; set; }
