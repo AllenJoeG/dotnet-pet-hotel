@@ -79,8 +79,7 @@ namespace pet_hotel.Controllers
           //Fetch Object data by id
           Pet pet = _context.Pet
               .SingleOrDefault(pet => pet.id == id);
-          //Generate timestamp
-          //update Object w/ timestamp
+          //Wipe timestamp
           pet.checkedInAt = null;
           //Update all that
           _context.Update(pet);
@@ -91,11 +90,13 @@ namespace pet_hotel.Controllers
 
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
           Pet pet = _context.Pet.Find(id);
           _context.Pet.Remove(pet);
           _context.SaveChanges();
+
+          return NoContent();
         }
 
         
